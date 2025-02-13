@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Removal Tool</title>
+    <meta name="description" content="AI-Powered Background Removal Tool - Private and Secure, Lightning Fast">
+    <meta name="keywords" content="background removal, AI, image editing, photo editing, background eraser">
+    <style>
+        /* Add styles for better UI/UX */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+        .container {
+            padding: 2rem;
+            max-width: 800px;
+            margin: auto;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .upload-section, .result-section, .payment-section, #pricing-table {
+            margin: 2rem 0;
+        }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            padding: 2rem;
+            text-align: center;
+            background-color: #fff;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .drop-zone.dragover {
+            border-color: #4CAF50;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .pricing-card {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            background-color: #fff;
+            text-align: center;
+            margin: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1, h2 {
+            color: #4CAF50;
+        }
+        p, ul {
+            line-height: 1.6;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #333;
+            color: white;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Background Removal Tool</h1>
+        <nav>
+            <a href="#pricing-table">Pricing</a>
+            <a href="#privacy-policy">Privacy Policy</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>AI-Powered Background Removal</h1>
+        <p class="tagline">Private and Secure, Lightning Fast</p>
+        <div class="upload-section">
+            <div class="drop-zone" id="dropZone">
+                Drag & Drop an Image or
+                <input type="file" id="imageUpload" accept="image/*" />
+                <label for="imageUpload" class="upload-label">Choose an Image</label>
+            </div>
+        </div>
+        <div class="result-section">
+            <img id="originalImage" src="#" alt="Original Image" style="display: none;" />
+            <img id="processedImage" src="#" alt="Processed Image" style="display: none;" />
+        </div>
+        <button id="removeBackgroundBtn" disabled>Remove Background</button>
+        <button id="downloadBtn" style="display: none;">Download Processed Image</button>
+
+        <!-- Payment Section -->
+        <div class="payment-section" id="paymentSection" style="display: none;">
+            <p>You've reached the free usage limit. To continue, please make a payment:</p>
+            <p>
+                <strong>10 Uses:</strong> 100 ETB via Telebirr (0929570426) or CBE Account (1000582835048).
+                <br>
+                <strong>Unlimited Uses:</strong> 500 ETB via Telebirr (0929570426) or CBE Account (1000582835048).
+            </p>
+            <p>Upload your transaction receipt after payment:</p>
+            <input type="file" id="receiptUpload" accept="image/*" />
+            <button id="submitReceiptBtn">Submit Receipt</button>
+        </div>
+
+        <!-- Pricing Table -->
+        <div id="pricing-table">
+            <div class="pricing-card">
+                <h3>Free Plan</h3>
+                <p>3 Free Uses</p>
+                <p>HD Resolution</p>
+                <p>Basic Support</p>
+                <button disabled>Current Plan</button>
+            </div>
+            <div class="pricing-card">
+                <h3>10 Uses</h3>
+                <p>100 ETB</p>
+                <p>HD Resolution</p>
+                <p>Commercial License</p>
+                <button id="buy10Uses">Get Now</button>
+            </div>
+            <div class="pricing-card">
+                <h3>Unlimited</h3>
+                <p>500 ETB</p>
+                <p>HD Resolution</p>
+                <p>Commercial License</p>
+                <button id="buyUnlimited">Get Now</button>
+            </div>
+        </div>
+
+        <!-- Privacy Policy Section -->
+        <div id="privacy-policy">
+            <h1>Privacy Policy</h1>
+            <p>Welcome to our Privacy Policy page! When you use our web site services, you trust us with your information. This Privacy Policy is meant to help you understand what data we collect, why we collect it, and what we do with it. This is important; we hope you will take time to read it carefully.</p>
+            
+            <h2>1. Information We Collect</h2>
+            <p>We collect information to provide better services to all our users. We collect information in the following ways:</p>
+            <ul>
+                <li><strong>Personal Information:</strong> Information such as your name, email address, phone number, etc.</li>
+                <li><strong>Usage Data:</strong> Information about how you interact with our website, including pages visited, time spent on each page, and other usage patterns.</li>
+                <li><strong>Cookies:</strong> Information collected through cookies and similar tracking technologies.</li>
+            </ul>
+
+            <h2>2. How We Collect Information</h2>
+            <p>We collect information in two ways:</p>
+            <ul>
+                <li><strong>Direct Collection:</strong> Information provided directly by you through forms, account creation, etc.</li>
+                <li><strong>Automatic Collection:</strong> Information collected automatically through cookies, web beacons, and other tracking technologies.</li>
+            </ul>
+
+            <h2>3. How We Use Information</h2>
+            <p>We use the information we collect for various purposes, including:</p>
+            <ul>
+                <li><strong>Service Improvement:</strong> To analyze and improve the functionality and user experience of our website.</li>
+                <li><strong>Communication:</strong> To send updates, promotional materials, and other information.</li>
+                <li><strong>Advertising:</strong> To display personalized ads through Google AdSense and other advertising networks.</li>
+            </ul>
+
+            <h2>4. Third-Party Services</h2>
+            <p>We may use third-party services to improve our website and provide additional features:</p>
+            <ul>
+                <li><strong>Google AdSense:</strong> We use Google AdSense to serve ads on our site. Google AdSense uses cookies to serve ads based on user visits to our site and other sites on the internet. Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank">Google Ads Settings</a>.</li>
+                <li><strong>Analytics Services:</strong> We use analytics services (e.g., Google Analytics) to track and analyze website traffic. These services may use cookies and collect data about user interactions with our website.</li>
+            </ul>
+
+            <h2>5. User Rights</h2>
+            <p>You have the following rights regarding your data:</p>
+            <ul>
+                <li><strong>Opt-Out Options:</strong> You can opt out of personalized ads and manage your cookie preferences through        <div id="privacy-policy">
+                    <h1>Privacy Policy</h1>
+                    <p>Welcome to our Privacy Policy page! When you use our web site services, you trust us with your information. This Privacy Policy is meant to help you understand what data we collect, why we collect it, and what we do with it. This is important; we hope you will take time to read it carefully.</p>
+                    
+                    <h2>1. Information We Collect</h2>
+                    <p>We collect information to provide better services to all our users. We collect information in the following ways:</p>
+                    <ul>
+                        <li><strong>Personal Information:</strong> Information such as your name, email address, phone number, etc.</li>
+                        <li><strong>Usage Data:</strong> Information about how you interact with our website, including pages visited, time spent on each page, and other usage patterns.</li>
+                        <li><strong>Cookies:</strong> Information collected through cookies and similar tracking technologies.</li>
+                    </ul>
+        
+                    <h2>2. How We Collect Information</h2>
+                    <p>We collect information in two ways:</p>
+                    <ul>
+                        <li><strong>Direct Collection:</strong> Information provided directly by you through forms, account creation, etc.</li>
+                        <li><strong>Automatic Collection:</strong> Information collected automatically through cookies, web beacons, and other tracking technologies.</li>
+                    </ul>
+        
+                    <h2>3. How We Use Information</h2>
+                    <p>We use the information we collect for various purposes, including:</p>
+                    <ul>
+                        <li><strong>Service Improvement:</strong> To analyze and improve the functionality and user experience of our website.</li>
+                        <li><strong>Communication:</strong> To send updates, promotional materials, and other information.</li>
+                        <li><strong>Advertising:</strong> To display personalized ads through Google AdSense and other advertising networks.</li>
+                    </ul>
+        
+                    <h2>4. Third-Party Services</h2>
+                    <p>We may use third-party services to improve our website and provide additional features:</p>
+                    <ul>
+                        <li><strong>Google AdSense:</strong> We use Google AdSense to serve ads on our site. Google AdSense uses cookies to serve ads based on user visits to our site and other sites on the internet. Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank">Google Ads Settings</a>.</li>
+                        <li><strong>Analytics Services:</strong> We use analytics services (e.g., Google Analytics) to track and analyze website traffic. These services may use cookies and collect data about user interactions with our website.</li>
+                    </ul>
+        
+                    <h2>5. User Rights</h2>
+                    <p>You have the following rights regarding your data:</p>
+                    <ul>
+                        <li><strong>Opt-Out Options:</strong> You can opt out of personalized ads and manage your cookie preferences through your browser settings. For more information on how to manage cookies, visit <a href="https://www.aboutcookies.org" target="_blank">About Cookies</a>.</li>
+                        <li><strong>Access and Control:</strong> You can access, update, or delete your personal information by contacting us at <a href="@maalgodhu"> Telegram</a></li>
+                    </ul>
+        
+                    <h2>6. Data Security</h2>
+                    <p>We are committed to ensuring that your information is secure. We have implemented appropriate technical and organizational measures to protect the data we collect.</p>
+        
+                    <h2>7. Changes to This Privacy Policy</h2>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We encourage you to review this Privacy Policy periodically for any changes.</p>
+        
+                    <h2>8. Contact Information</h2>
+                    <p>If you have any questions or concerns about our privacy policy, please contact us at <a href="www.linkedin.com/in/abraham-fikadu-bbb054350">Linkedin</a></p>
+                </div>
+            </div>
+        
+            <!-- Footer -->
+            <footer>
+                <a href="#">Privacy Policy</a>
+                <p>&copy; 2025 Background Removal Tool. All rights reserved.</p>
+            </footer>
+        
+            <script>
+                // Track usage count
+                let usageCount = localStorage.getItem('usageCount') || 0;
+                const freeUsageLimit = 3;
+        
+                // Track payment status
+                let paymentApproved = localStorage.getItem('paymentApproved') === 'true';
+        
+                // Handle drag and drop
+                const dropZone = document.getElementById('dropZone');
+                const fileInput = document.getElementById('imageUpload');
+                const paymentSection = document.getElementById('paymentSection');
+                const removeBackgroundBtn = document.getElementById('removeBackgroundBtn');
+        
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('dragover');
+                });
+        
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('dragover');
+                });
+        
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        fileInput.files = e.dataTransfer.files;
+                        handleFileUpload(file);
+                    }
+                });
+        
+                // Handle file input
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        handleFileUpload(file);
+                    }
+                });
+        
+                // Handle file upload
+                function handleFileUpload(file) {
+                    if (usageCount >= freeUsageLimit && !paymentApproved) {
+                        paymentSection.style.display = 'block';
+                        removeBackgroundBtn.disabled = true;
+                        alert('You have reached the free usage limit. Please make a payment to continue.');
+                        return;
+                    }
+        
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const originalImage = document.getElementById('originalImage');
+                        originalImage.src = e.target.result;
+                        originalImage.style.display = 'block';
+                        removeBackgroundBtn.disabled = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+        
+                // Handle background removal
+                removeBackgroundBtn.addEventListener('click', function() {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('image_file', file);
+        
+                        // API details
+                        const apiUrl = 'https://api.remove.bg/v1.0/removebg';
+                        const apiKey = 'NtzuPYeFK21SzqNaU4HWtrw5';
+        
+                        // Show loading state
+                        removeBackgroundBtn.textContent = 'Processing...';
+                        removeBackgroundBtn.disabled = true;
+        
+                        fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-Api-Key': apiKey
+                            },
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('API request failed');
+                            }
+                            return response.blob(); // Get the processed image as a Blob
+                        })
+                        .then(blob => {
+                            const processedImage = document.getElementById('processedImage');
+                            processedImage.src = URL.createObjectURL(blob); // Display the processed image
+                            processedImage.style.display = 'block';
+        
+                            // Enable the download button
+                            const downloadBtn = document.getElementById('downloadBtn');
+                            downloadBtn.style.display = 'inline-block';
+                            downloadBtn.onclick = function() {
+                                const link = document.createElement('a');
+                                link.href = URL.createObjectURL(blob);
+                                link.download = 'processed-image.png'; // Default filename
+                                link.click();
+                            };
+        
+                            // Increment usage count
+                            usageCount++;
+                            localStorage.setItem('usageCount', usageCount);
+        
+                            // Check if usage limit is reached
+                            if (usageCount >= freeUsageLimit && !paymentApproved) {
+                                paymentSection.style.display = 'block';
+                                removeBackgroundBtn.disabled = true;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again.');
+                        })
+                        .finally(() => {
+                            removeBackgroundBtn.textContent = 'Remove Background';
+                            removeBackgroundBtn.disabled = false;
+                        });
+                    }
+                });
+        
+                // Handle receipt upload
+                document.getElementById('submitReceiptBtn').addEventListener('click', function() {
+                    const receiptFile = document.getElementById('receiptUpload').files[0];
+                    if (receiptFile) {
+                        alert('Receipt submitted. Your payment will be verified shortly.');
+        
+                        // Implement payment verification logic here
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const receiptImage = e.target.result;
+        
+                            // Actual verification logic
+                            const apiUrl = 'https://api.paymentprovider.com/verify'; // Replace with actual API endpoint
+                            const apiKey = 'your-api-key'; // Replace with your API key
+        
+                            fetch(apiUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${apiKey}`
+                                },
+                                body: JSON.stringify({
+                            receipt_image: receiptImage,
+                            amount: 100 // or 500, depending on the user's payment plan
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Payment verification failed');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.verified) {
+                            paymentApproved = true;
+                            localStorage.setItem('paymentApproved', 'true');
+                            paymentSection.style.display = 'none';
+                            removeBackgroundBtn.disabled = false;
+                            alert('Payment approved! You can now continue using the tool.');
+                        } else {
+                            alert('Payment verification failed. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Payment verification error:', error);
+                        alert('An error occurred during payment verification. Please try again.');
+                    });
+                };
+                reader.readAsDataURL(receiptFile);
+            } else {
+                alert('Please upload your transaction receipt.');
+            }
+        });
+
+        // Handle pricing buttons
+        document.getElementById('buy10Uses').addEventListener('click', function() {
+            alert('Please pay 100 ETB via Telebirr (0929570426) or CBE Account (1000582835048) and upload your receipt.');
+        });
+
+        document.getElementById('buyUnlimited').addEventListener('click', function() {
+            alert('Please pay 500 ETB via Telebirr (0929570426) or CBE Account (1000582835048) and upload your receipt.');
+        });
+    </script>
+
+    <!-- Google AdSense Code -->
+    <script data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</body>
+</html>
